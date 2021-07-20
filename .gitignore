@@ -1,0 +1,9 @@
+# vim temporaries
+*.swp
+*.swo
+*~
+
+build/
+obj/
+
+flashavr.bat
