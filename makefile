@@ -17,17 +17,17 @@ endef
 $(OBJDIR)/%.o: %.c
 	$(cc-cmd)
 
-$(OBJDIR)/%-test.o: test/%-test.c
+$(OBJDIR)/test-%.o: test/mc/test-%.c
 	$(cc-cmd)
 
-$(OBJDIR)/%.test.o: test/%.test.c
+$(OBJDIR)/%.test.o: test/dev/%.test.c
 	$(CHECK-CC) $(CHECK-CFLAGS) $< -o $@
 
 define objcopy
 avr-objcopy -O ihex $(BUILDDIR)/$@.o $(BUILDDIR)/$@.hex
 endef
 
-blink-test: $(OBJDIR)/blink-test.o
+test-blink: $(OBJDIR)/test-blink.o
 	$(LD) $(LDFLAGS) $? -o $(BUILDDIR)/$@.o
 	$(objcopy)
 
