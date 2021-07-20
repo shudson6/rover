@@ -6,11 +6,11 @@
 
 #include "string.h"
 
-int atoi(const char* str) {
+int strToInt(const char* str) {
   unsigned char multiplier = 1;
   int result = 0;
 
-  while (isspace(*str)) {
+  while (isSpace(*str)) {
     str++;
   }
 
@@ -22,7 +22,7 @@ int atoi(const char* str) {
     str++;
   }
 
-  while (isdigit(*str)) {
+  while (isDigit(*str)) {
     result *= 10;
     result += *str - '0';
     str++;
@@ -31,23 +31,23 @@ int atoi(const char* str) {
   return result;
 }
 
-unsigned char isalnum(char ch) {
-  return isalpha(ch) || isdigit(cd);
+unsigned char isAlphaNum(char ch) {
+  return isAlpha(ch) || isDigit(ch);
 }
 
-unsigned char isalpha(char ch) {
-  return islower(ch) || isupper(ch);
+unsigned char isAlpha(char ch) {
+  return isLower(ch) || isUpper(ch);
 }
 
-unsigned char isdigit(char ch) {
+unsigned char isDigit(char ch) {
   return ch >= '0' && ch <= '9';
 }
 
-unsigned char islower(char ch) {
+unsigned char isLower(char ch) {
   return ch >= 'a' && ch <= 'z';
 }
 
-unsigned char isspace(char ch) {
+unsigned char isSpace(char ch) {
   return ch == ' '
       || ch == '\n'
       || ch == '\r'
@@ -56,12 +56,12 @@ unsigned char isspace(char ch) {
       || ch == '\v';
 }
 
-unsigned char isupper(char ch) {
+unsigned char isUpper(char ch) {
   return ch >= 'A' && ch <= 'Z';
 }
 
-unsigned char isxdigit(char ch) {
-  return isdigit(ch)
+unsigned char isXdigit(char ch) {
+  return isDigit(ch)
       || (ch >= 'a' && ch <= 'f')
       || (ch >= 'A' && ch <= 'F');
 }
