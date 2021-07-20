@@ -1,6 +1,7 @@
 BUILDDIR = build
 TESTBUILDDIR = build/test
 OBJDIR = obj
+TESTOBJDIR = obj/test
 CFLAGS = -c -Iinclude -mmcu=atmega328p
 VPATH = src
 CC = avr-gcc
@@ -20,7 +21,10 @@ $(OBJDIR)/%.o: %.c
 $(OBJDIR)/test-%.o: test/mc/test-%.c
 	$(cc-cmd)
 
-$(OBJDIR)/%.test.o: test/dev/%.test.c
+$(TESTOBJDIR)/%.o: %.c
+	$(CHECK-CC) $(CHECK-CFLAGS) $< -o $@
+
+$(TESTOBJDIR)/%.test.o: test/dev/%.test.c
 	$(CHECK-CC) $(CHECK-CFLAGS) $< -o $@
 
 define objcopy
@@ -31,6 +35,6 @@ test-blink: $(OBJDIR)/test-blink.o
 	$(LD) $(LDFLAGS) $? -o $(BUILDDIR)/$@.o
 	$(objcopy)
 
-test: $(OBJDIR)/string.test.o
+test: $(TESTOBJDIR)/string.test.o $(TESTOBJDIR)/string.o
 	$(CHECK-CC) $? $(CHECK-LDADD) -o $(TESTBUILDDIR)/testexec
 
