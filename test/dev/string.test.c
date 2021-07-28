@@ -111,6 +111,42 @@ START_TEST(test_string_isxdigit) {
 }
 END_TEST
 
+START_TEST(test_strToInt_valid_positive_numerals) {
+  ck_assert_int_eq(1, strToInt("1"));
+  ck_assert_int_eq(42, strToInt("42"));
+  ck_assert_int_eq(32767, strToInt("32767"));
+  ck_assert_int_eq(0, strToInt("0"));
+}
+END_TEST
+
+START_TEST(test_strToInt_valid_negative_numerals) {
+  ck_assert_int_eq(-1, strToInt("-1"));
+  ck_assert_int_eq(-32768, strToInt("-32768"));
+  ck_assert_int_eq(-42, strToInt("-42"));
+}
+END_TEST
+
+START_TEST(test_strToInt_leading_whitespace) {
+  ck_assert_int_eq(1337, strToInt("  1337"));
+  ck_assert_int_eq(1337, strToInt("\t\n +1337"));
+  ck_assert_int_eq(-1337, strToInt(" \f-1337"));
+}
+END_TEST
+
+START_TEST(test_strToInt_trailing_nonnumeral) {
+  ck_assert_int_eq(1337, strToInt("1337x.4"));
+  ck_assert_int_eq(42, strToInt("42 42"));
+  ck_assert_int_eq(91, strToInt("91$$$"));
+}
+END_TEST
+
+START_TEST(test_strToInt_invalid_input) {
+  ck_assert_int_eq(0, strToInt("  a"));
+  ck_assert_int_eq(0, strToInt("+-4"));
+  ck_assert_int_eq(0, strToInt("x460"));
+}
+END_TEST
+
 Suite* stringTestSuite() {
   Suite *s;
   TCase *tcIsalnum;
@@ -120,6 +156,7 @@ Suite* stringTestSuite() {
   TCase *tcIsspace;
   TCase *tcIsupper;
   TCase *tcIsxdigit;
+  TCase *tcStrToInt;
 
   s = suite_create("string");
   tcIsalnum = tcase_create("isAlphaNum()");
@@ -129,6 +166,7 @@ Suite* stringTestSuite() {
   tcIsspace = tcase_create("isSpace()");
   tcIsupper = tcase_create("isUpper()");
   tcIsxdigit = tcase_create("isXdigit()");
+  tcStrToInt = tcase_create("strToInt()");
 
   tcase_add_test(tcIsalnum, test_string_isalnum);
   suite_add_tcase(s, tcIsalnum);
@@ -150,6 +188,13 @@ Suite* stringTestSuite() {
 
   tcase_add_test(tcIsxdigit, test_string_isxdigit);
   suite_add_tcase(s, tcIsxdigit);
+
+  tcase_add_test(tcStrToInt, test_strToInt_valid_positive_numerals);
+  tcase_add_test(tcStrToInt, test_strToInt_valid_negative_numerals);
+  tcase_add_test(tcStrToInt, test_strToInt_leading_whitespace);
+  tcase_add_test(tcStrToInt, test_strToInt_trailing_nonnumeral);
+  tcase_add_test(tcStrToInt, test_strToInt_invalid_input);
+  suite_add_tcase(s, tcStrToInt);
 
   return s;
 }

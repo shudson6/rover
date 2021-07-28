@@ -7,7 +7,8 @@
 #include "string.h"
 
 int strToInt(const char* str) {
-  unsigned char multiplier = 1;
+  // multiplier is -1 because #s will be initially negative
+  int multiplier = -1;
   int result = 0;
 
   while (isSpace(*str)) {
@@ -15,19 +16,21 @@ int strToInt(const char* str) {
   }
 
   if (*str == '-') {
-    multiplier = -1;
+    multiplier = 1;
     str++;
   }
-  if (*str == '+') {
+  else if (*str == '+') {
     str++;
   }
 
   while (isDigit(*str)) {
     result *= 10;
-    result += *str - '0';
+    // subtract because negatives have *slightly* more range
+    result -= *str - '0';
     str++;
   }
 
+  result *= multiplier;
   return result;
 }
 
