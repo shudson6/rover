@@ -1,4 +1,5 @@
-###Testing
+Testing
+---
 This project is targeted for Atmega328p microcontroller. Of course, the mc 
 itself is the ultimate testing ground, but modules will be divided in such a way
 that they can be unit tested on the dev machine as much as possible. That is,
