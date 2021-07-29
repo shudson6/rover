@@ -147,6 +147,13 @@ START_TEST(test_strToInt_invalid_input) {
 }
 END_TEST
 
+START_TEST(test_strCompare) {
+  ck_assert_int_eq(1, strCompare("foo", "bar"));
+  ck_assert_int_eq(0, strCompare("equal", "equal"));
+  ck_assert_int_eq(-1, strCompare("hello", "world"));
+}
+END_TEST
+
 Suite* stringTestSuite() {
   Suite *s;
   TCase *tcIsalnum;
@@ -157,6 +164,7 @@ Suite* stringTestSuite() {
   TCase *tcIsupper;
   TCase *tcIsxdigit;
   TCase *tcStrToInt;
+  TCase *tcStrCompare;
 
   s = suite_create("string");
   tcIsalnum = tcase_create("isAlphaNum()");
@@ -167,6 +175,7 @@ Suite* stringTestSuite() {
   tcIsupper = tcase_create("isUpper()");
   tcIsxdigit = tcase_create("isXdigit()");
   tcStrToInt = tcase_create("strToInt()");
+  tcStrCompare = tcase_create("strCompare()");
 
   tcase_add_test(tcIsalnum, test_string_isalnum);
   suite_add_tcase(s, tcIsalnum);
@@ -195,6 +204,9 @@ Suite* stringTestSuite() {
   tcase_add_test(tcStrToInt, test_strToInt_trailing_nonnumeral);
   tcase_add_test(tcStrToInt, test_strToInt_invalid_input);
   suite_add_tcase(s, tcStrToInt);
+  
+  tcase_add_test(tcStrCompare, test_strCompare);
+  suite_add_tcase(s, tcStrCompare);
 
   return s;
 }

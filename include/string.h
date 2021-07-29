@@ -68,3 +68,14 @@ unsigned char isUpper(char ch);
  */
 unsigned char isXdigit(char ch);
 
+/*******************************************************************************
+ * unsigned char strCompare(const char* a, const char* b)
+ *
+ * Compares two null-terminated strings.
+ * Returns negative if a comes lexicographically before b.
+ * Returns positive if b comes lexicographically before a.
+ * Returns zero if a and b compare equal.
+ * 
+ * Behavior is undefined if the strings are not null-terminated.
+ */
+int strCompare(const char* a, const char* b);

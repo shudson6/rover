@@ -68,3 +68,17 @@ unsigned char isXdigit(char ch) {
       || (ch >= 'a' && ch <= 'f')
       || (ch >= 'A' && ch <= 'F');
 }
+
+int strCompare(const char* a, const char* b) {
+  int idx = 0;
+  while (a[idx] != 0 || b[idx] != 0) {
+    if ((unsigned char)a[idx] < (unsigned char)b[idx]) {
+      return -1;
+    }
+    if ((unsigned char)a[idx] > (unsigned char)b[idx]) {
+      return 1;
+    }
+    idx++;
+  }
+  return 0;
+}
