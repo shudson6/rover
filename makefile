@@ -35,6 +35,6 @@ test-blink: $(OBJDIR)/test-blink.o
 	$(LD) $(LDFLAGS) $? -o $(BUILDDIR)/$@.o
 	$(objcopy)
 
-test: $(TESTOBJDIR)/string.test.o $(TESTOBJDIR)/string.o
+test: $(TESTOBJDIR)/util.test.o $(TESTOBJDIR)/util.o
 	$(CHECK-CC) $? $(CHECK-LDADD) -o $(TESTBUILDDIR)/testexec
 
