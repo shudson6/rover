@@ -5,7 +5,7 @@
  */
 
 #include "util.h"
-#include <string.h>
+#include <ctype.h>
 
 int strToInt(const char* str) {
   // multiplier is -1 because #s will be initially negative
@@ -33,5 +33,28 @@ int strToInt(const char* str) {
 
   result *= multiplier;
   return result;
+}
+
+unsigned char isNumeric(const char* str) {
+  while (isspace(*str)) {
+    str++;
+  }
+
+  if (*str == '-' || *str == '+') {
+    str++;
+  }
+
+  // need at least one digit to be valid
+  // if the next nondigit character is the null terminator, it's good.
+  if (isdigit(*str)) {
+    while (isdigit(*str)) {
+      str++;
+    }
+    if (*str == 0) {
+      return 1;
+    }
+  }
+
+  return 0;
 }
 

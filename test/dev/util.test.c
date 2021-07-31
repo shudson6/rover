@@ -38,19 +38,33 @@ START_TEST(test_strToInt_invalid_input) {
 }
 END_TEST
 
+START_TEST(test_isNumeric) {
+  ck_assert_int_eq(0, isNumeric("+"));
+  ck_assert_int_eq(1, isNumeric("95"));
+  ck_assert_int_eq(1, isNumeric("-0"));
+  ck_assert_int_eq(1, isNumeric("   +12"));
+  ck_assert_int_eq(0, isNumeric("  19e"));
+}
+END_TEST
+
 Suite* stringTestSuite() {
   Suite *s;
   TCase *tcStrToInt;
+  TCase *tcIsNumeric;
 
-  s = suite_create("string");
   tcStrToInt = tcase_create("strToInt()");
-
   tcase_add_test(tcStrToInt, test_strToInt_valid_positive_numerals);
   tcase_add_test(tcStrToInt, test_strToInt_valid_negative_numerals);
   tcase_add_test(tcStrToInt, test_strToInt_leading_whitespace);
   tcase_add_test(tcStrToInt, test_strToInt_trailing_nonnumeral);
   tcase_add_test(tcStrToInt, test_strToInt_invalid_input);
+
+  tcIsNumeric = tcase_create("isNumeric()");
+  tcase_add_test(tcIsNumeric, test_isNumeric);
+
+  s = suite_create("string");
   suite_add_tcase(s, tcStrToInt);
+  suite_add_tcase(s, tcIsNumeric);
 
   return s;
 }
