@@ -2,6 +2,13 @@
 #include "commandbuffer.h"
 
 START_TEST(simple_add_issue) {
+  Command_t foo;
+  foo.commandCode = 1;
+
+  ck_assert_int_ne( 0, CommandBuffer_add( &foo ));
+
+  Command_t bar = CommandBuffer_getNext();
+  ck_assert_int_eq( 0, memcmp( &foo, &bar, sizeof(Command_t)));
 }
 END_TEST
 
