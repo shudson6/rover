@@ -99,16 +99,3 @@ Suite* stringTestSuite() {
   return s;
 }
 
-int main() {
-  int numberFailed;
-  Suite *s;
-  SRunner *sr;
-
-  s = stringTestSuite();
-  sr = srunner_create(s);
-
-  srunner_run_all(sr, CK_NORMAL);
-  numberFailed = srunner_ntests_failed(sr);
-  srunner_free(sr);
-  return (numberFailed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
