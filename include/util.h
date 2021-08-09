@@ -15,7 +15,7 @@
  */
 int strToInt(const char* str);
 
-/********************************************************************************
+/*******************************************************************************
  * unsigned char isNumeric(const char* str)
  *
  * Determines whether str points to a valid string representation of an integer.
@@ -30,3 +30,15 @@ int strToInt(const char* str);
  * Returns zero otherwise.
  */
 unsigned char isNumeric(const char* str);
+
+/*******************************************************************************
+ * unsigned char fitsInt16(const char* str)
+ *
+ * Determines whether the base-10 integer represented in str will fit in a 
+ * 16-bit signed integer, using the same parsing rules as strToInt(). This is 
+ * meant to check if the value returned by strToInt() will be reliable.
+ *
+ * Returns nonzero if str represents an integer that will fit in a signed int16.
+ * Returns zero otherwise.
+ */
+unsigned char fitsInt16(const char* str);
