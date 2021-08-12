@@ -18,12 +18,12 @@ unsigned char commandsQueued = 0;
  * increments a pointer within the circular buffer.
  * intended for use with cbNextIssue, cbNextAdd
  */
-Command_t* incrementIndex(Command_t* ptr) {
-  ptr++;
-  if (ptr == commandBuffer + BUF_SIZE) {
-    ptr = commandBuffer;
+Command_t* incrementIndex(Command_t** ptr) {
+  (*ptr)++;
+  if (*ptr == commandBuffer + BUF_SIZE) {
+    *ptr = commandBuffer;
   }
-  return ptr;
+  return *ptr;
 }
 
 // 'clears' the command buffer by setting pointers and commandsQueued to zero
@@ -42,7 +42,7 @@ Command_t CommandBuffer_getNext() {
 
   // normally, increment issue index and decrement count
   if (commandsQueued > 0) {
-    incrementIndex( cbNextIssue );
+    incrementIndex( &cbNextIssue );
     commandsQueued--;
   }
   // but if the queue is empty, don't do that. instead set the command to null
@@ -59,7 +59,7 @@ unsigned char CommandBuffer_add(Command_t* command) {
   }
 
   *cbNextAdd = *command;
-  incrementIndex( cbNextAdd );
+  incrementIndex( &cbNextAdd );
   commandsQueued++;
 
   return 1;
