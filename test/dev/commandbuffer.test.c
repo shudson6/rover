@@ -47,11 +47,26 @@ START_TEST(cycle_buffer_at_capacity) {
 }
 END_TEST
 
+START_TEST(report_accurate_capacity) {
+  int capacity = CommandBuffer_capacityLeft();
+  Command_t cmd;
+  for (int i = 1; i <= capacity; i++) {
+    CommandBuffer_add( &cmd );
+    ck_assert_int_eq( capacity - i, CommandBuffer_capacityLeft());
+  }
+  for (int i = 1; i <= capacity; i++) {
+    CommandBuffer_getNext();
+    ck_assert_int_eq( i, CommandBuffer_capacityLeft());
+  }
+}
+END_TEST
+
 Suite* commandBufferTestSuite() {
   Suite *s;
   TCase *tcSimpleAddIssue;
   TCase *tcFullBuffer;
   TCase *tcCycleBuffer;
+  TCase *tcCapReport;
 
   tcSimpleAddIssue = tcase_create("add and issue");
   tcase_add_test(tcSimpleAddIssue, simple_add_issue);
@@ -62,10 +77,14 @@ Suite* commandBufferTestSuite() {
   tcCycleBuffer = tcase_create("cycling buffer at capacity");
   tcase_add_test(tcCycleBuffer, cycle_buffer_at_capacity);
 
+  tcCapReport = tcase_create("accuracy of reported capacity");
+  tcase_add_test(tcCapReport, report_accurate_capacity);
+
   s = suite_create("command buffer");
   suite_add_tcase(s, tcSimpleAddIssue);
   suite_add_tcase(s, tcFullBuffer);
   suite_add_tcase(s, tcCycleBuffer);
+  suite_add_tcase(s, tcCapReport);
 
   return s;
 }
