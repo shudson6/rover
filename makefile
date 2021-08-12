@@ -8,7 +8,7 @@ CC = avr-gcc
 LD = avr-gcc
 LDFLAGS = -mmcu=atmega328p
 CHECK-CC = gcc
-CHECK-CFLAGS = -c -Iinclude
+CHECK-CFLAGS = -c -g -Iinclude
 CHECK-LDADD = -lcheck -lm -lrt -lpthread -lsubunit
 
 define cc-cmd
