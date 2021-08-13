@@ -53,11 +53,55 @@ START_TEST(report_accurate_capacity) {
   for (int i = 1; i <= capacity; i++) {
     CommandBuffer_add( &cmd );
     ck_assert_int_eq( capacity - i, CommandBuffer_capacityLeft());
+    ck_assert_int_ne( 0, CommandBuffer_hasRoomFor( capacity - i ));
+    ck_assert_int_eq( 0, CommandBuffer_hasRoomFor( capacity - i + 1 ));
   }
   for (int i = 1; i <= capacity; i++) {
     CommandBuffer_getNext();
     ck_assert_int_eq( i, CommandBuffer_capacityLeft());
+    ck_assert_int_ne( 0, CommandBuffer_hasRoomFor( i ));
+    ck_assert_int_eq( 0, CommandBuffer_hasRoomFor( i + 1 ));
   }
+}
+END_TEST
+
+START_TEST(results_of_clear) {
+  int capacity = CommandBuffer_capacityLeft();
+  Command_t cmd;
+  cmd.commandCode = 3;
+  CommandBuffer_add( &cmd );
+  CommandBuffer_add( &cmd );
+  CommandBuffer_add( &cmd );
+  ck_assert_int_eq( capacity - 3, CommandBuffer_capacityLeft());
+  CommandBuffer_clear();
+  ck_assert_int_eq( 0, CommandBuffer_hasNext());
+  ck_assert_int_eq( capacity, CommandBuffer_capacityLeft());
+  
+  cmd = CommandBuffer_getNext();
+  ck_assert_int_eq( 0, cmd.commandCode );
+}
+END_TEST
+
+START_TEST(null_command_when_empty) {
+  int capacity = CommandBuffer_capacityLeft();
+  Command_t cmd = CommandBuffer_getNext();
+  ck_assert_int_eq( CMDCODE_NULL, cmd.commandCode );
+
+  // fill the buffer
+  cmd.commandCode = 3;
+  while ( CommandBuffer_hasRoomFor( 1 )) {
+    CommandBuffer_add( &cmd );
+  }
+  // get back a bunch of 3s
+  while ( CommandBuffer_capacityLeft() < capacity ) {
+    cmd = CommandBuffer_getNext();
+    ck_assert_int_eq( 3, cmd.commandCode );
+  }
+  // should be empty
+  ck_assert_int_eq( 0, CommandBuffer_hasNext());
+  cmd = CommandBuffer_getNext();
+  ck_assert_int_eq( CMDCODE_NULL, cmd.commandCode );
+  ck_assert_int_eq( capacity, CommandBuffer_capacityLeft());
 }
 END_TEST
 
@@ -67,6 +111,8 @@ Suite* commandBufferTestSuite() {
   TCase *tcFullBuffer;
   TCase *tcCycleBuffer;
   TCase *tcCapReport;
+  TCase *tcResultClear;
+  TCase *tcEmpty;
 
   tcSimpleAddIssue = tcase_create("add and issue");
   tcase_add_test(tcSimpleAddIssue, simple_add_issue);
@@ -80,11 +126,19 @@ Suite* commandBufferTestSuite() {
   tcCapReport = tcase_create("accuracy of reported capacity");
   tcase_add_test(tcCapReport, report_accurate_capacity);
 
+  tcResultClear = tcase_create("clear buffer");
+  tcase_add_test(tcResultClear, results_of_clear);
+
+  tcEmpty = tcase_create("empty buffer issues null command");
+  tcase_add_test(tcEmpty, null_command_when_empty);
+
   s = suite_create("command buffer");
   suite_add_tcase(s, tcSimpleAddIssue);
   suite_add_tcase(s, tcFullBuffer);
   suite_add_tcase(s, tcCycleBuffer);
   suite_add_tcase(s, tcCapReport);
+  suite_add_tcase(s, tcResultClear);
+  suite_add_tcase(s, tcEmpty);
 
   return s;
 }
