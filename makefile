@@ -37,6 +37,7 @@ test-blink: $(OBJDIR)/test-blink.o
 
 devtestobjs := $(DEVTESTDIR)/util.test.o $(DEVTESTDIR)/util.o \
 							 $(DEVTESTDIR)/commandbuffer.test.o $(DEVTESTDIR)/commandbuffer.o \
+							 $(DEVTESTDIR)/command.test.o $(DEVTESTDIR)/command.o \
 							 $(DEVTESTDIR)/main.test.o
 
 test: $(devtestobjs)
